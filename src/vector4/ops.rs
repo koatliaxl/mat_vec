@@ -5,7 +5,7 @@ impl<T> Vector4<T>
 where
     T: Float,
 {
-    pub fn normalize_3_elements(&self) -> Vector4<T> {
+    pub fn normalize_as_vec3(&self) -> Vector4<T> {
         let (x, y, z, w) = self.get_components();
         let length = (x * x + y * y + z * z).sqrt();
         Vector4 {

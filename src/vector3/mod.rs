@@ -1,4 +1,5 @@
-use std::ops::Index;
+use num_traits::{AsPrimitive, Float};
+use std::ops::{Add, Index, Mul};
 
 mod ops;
 
@@ -81,5 +82,35 @@ where
             }
         }
         true
+    }
+}
+
+impl<T> Vector3<T>
+where
+    T: AsPrimitive<f32> + Add<Output = T> + Mul<Output = T>,
+{
+    pub fn length_as_f32(&self) -> f32 {
+        let (x, y, z) = self.get_components();
+        let square_len = x * x + y * y + z * z;
+        square_len.as_().sqrt()
+    }
+}
+impl<T> Vector3<T>
+where
+    T: AsPrimitive<f64> + Add<Output = T> + Mul<Output = T>,
+{
+    pub fn length_as_f64(&self) -> f64 {
+        let (x, y, z) = self.get_components();
+        let square_len = x * x + y * y + z * z;
+        square_len.as_().sqrt()
+    }
+}
+impl<T> Vector3<T>
+where
+    T: Float,
+{
+    pub fn length(&self) -> T {
+        let (x, y, z) = self.get_components();
+        (x * x + y * y + z * z).sqrt()
     }
 }
