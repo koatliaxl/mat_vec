@@ -1,7 +1,5 @@
-#![cfg(test)]
-
-use super::Matrix4x4;
-use crate::test::AlmostEq;
+use crate::test_support::AlmostEq;
+use crate::Matrix4x4;
 use crate::Vector4;
 
 #[test]
@@ -83,8 +81,13 @@ fn test_mul_vec4() {
 
 #[test]
 fn test_mul_float() {
+    // todo? is this right? count operations too?
     // sequential (non-parallel) 1 multiplication and 3 additions per resulting element
     let max_number_of_operations = 1 + 3;
+    /* because values are in range of 1..8 (2^0 .. 2^3),
+    8 - because max value of element of resulting matrix is (n * n) * 4, which always < 16 for
+    n <= 2.0 except when at least one row in first matrix and column in second matrix
+    entirely consist of 2.0 */
     let max_binary_magnitude = 4;
     let tolerance =
         f64::EPSILON * (2_u32.pow(max_binary_magnitude) * max_number_of_operations) as f64;

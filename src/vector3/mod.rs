@@ -1,7 +1,7 @@
-use num_traits::{AsPrimitive, Float};
-use std::ops::{Add, Index, Mul};
-
 mod ops;
+
+use num_traits::{AsPrimitive, Float};
+use std::ops::{Add, Index, IndexMut, Mul};
 
 #[derive(Copy, Clone, Debug)]
 pub struct Vector3<T>
@@ -58,6 +58,18 @@ where
     pub fn set_z(&mut self, value: T) {
         self.raw_data[2] = value;
     }
+
+    pub fn x_mut(&mut self) -> &mut T {
+        &mut self.raw_data[0]
+    }
+
+    pub fn y_mut(&mut self) -> &mut T {
+        &mut self.raw_data[1]
+    }
+
+    pub fn z_mut(&mut self) -> &mut T {
+        &mut self.raw_data[2]
+    }
 }
 
 impl<T> Index<usize> for Vector3<T>
@@ -68,6 +80,15 @@ where
 
     fn index(&self, index: usize) -> &Self::Output {
         &self.raw_data[index]
+    }
+}
+
+impl<T> IndexMut<usize> for Vector3<T>
+where
+    T: Copy,
+{
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.raw_data[index]
     }
 }
 
@@ -87,6 +108,15 @@ where
 
 impl<T> Vector3<T>
 where
+    T: Float,
+{
+    pub fn length(&self) -> T {
+        let (x, y, z) = self.get_components();
+        (x * x + y * y + z * z).sqrt()
+    }
+}
+impl<T> Vector3<T>
+where
     T: AsPrimitive<f32> + Add<Output = T> + Mul<Output = T>,
 {
     pub fn length_as_f32(&self) -> f32 {
@@ -103,14 +133,5 @@ where
         let (x, y, z) = self.get_components();
         let square_len = x * x + y * y + z * z;
         square_len.as_().sqrt()
-    }
-}
-impl<T> Vector3<T>
-where
-    T: Float,
-{
-    pub fn length(&self) -> T {
-        let (x, y, z) = self.get_components();
-        (x * x + y * y + z * z).sqrt()
     }
 }

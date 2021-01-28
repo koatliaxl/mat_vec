@@ -3,7 +3,7 @@ mod ops;
 use crate::Vector3;
 use num_traits::Zero;
 use std::fmt::Debug;
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Vector4<T>
@@ -71,6 +71,22 @@ where
     pub fn set_w(&mut self, value: T) {
         self.raw_data[3] = value;
     }
+
+    pub fn x_mut(&mut self) -> &mut T {
+        &mut self.raw_data[0]
+    }
+
+    pub fn y_mut(&mut self) -> &mut T {
+        &mut self.raw_data[1]
+    }
+
+    pub fn z_mut(&mut self) -> &mut T {
+        &mut self.raw_data[2]
+    }
+
+    pub fn w_mut(&mut self) -> &mut T {
+        &mut self.raw_data[3]
+    }
 }
 
 impl<T> Vector4<T>
@@ -92,6 +108,15 @@ where
 
     fn index(&self, index: usize) -> &Self::Output {
         &self.raw_data[index]
+    }
+}
+
+impl<T> IndexMut<usize> for Vector4<T>
+where
+    T: Copy,
+{
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.raw_data[index]
     }
 }
 

@@ -1,6 +1,6 @@
 use crate::Vector3;
 use num_traits::Float;
-use std::ops::{Add, AddAssign, BitXor, Mul, Not, Sub, SubAssign};
+use std::ops::{Add, AddAssign, BitXor, Mul, Neg, Not, Rem, Sub, SubAssign};
 
 impl<T> Vector3<T>
 where
@@ -23,6 +23,20 @@ where
 
     fn not(self) -> Self::Output {
         self.normalize()
+    }
+}
+
+impl<T> Neg for Vector3<T>
+where
+    T: Neg<Output = T> + Copy,
+{
+    type Output = Vector3<T>;
+
+    fn neg(self) -> Self::Output {
+        let (x, y, z) = self.get_components();
+        Vector3 {
+            raw_data: [-x, -y, -z],
+        }
     }
 }
 
@@ -87,6 +101,14 @@ where
         }
     }
 }
+impl Mul<Vector3<f32>> for f32 {
+    type Output = Vector3<f32>;
+
+    fn mul(self, rhs: Vector3<f32>) -> Self::Output {
+        rhs * self
+    }
+}
+// todo for other primitive numbers; via macro?
 
 impl<T> Vector3<T>
 where
@@ -112,13 +134,24 @@ where
     }
 }
 
-/*impl<T> Rem for Vector3<T>
+impl<T> Vector3<T>
 where
-    T: Copy + Mul<Output = T> + Sub<Output = T>,
+    T: Copy + Mul<Output = T> + Add<Output = T>,
 {
-    type Output = Vector3<T>;
+    pub fn dot_product(&self, other: Vector3<T>) -> T {
+        let (x, y, z) = self.get_components();
+        let (x2, y2, z2) = other.get_components();
+        x * x2 + y * y2 + z * z2
+    }
+}
+/// Dot product
+impl<T> Rem for Vector3<T>
+where
+    T: Copy + Mul<Output = T> + Add<Output = T>,
+{
+    type Output = T;
 
     fn rem(self, rhs: Self) -> Self::Output {
-        self.cross_product(rhs)
+        self.dot_product(rhs)
     }
-}*/
+}

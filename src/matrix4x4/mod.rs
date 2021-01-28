@@ -1,12 +1,13 @@
+use std::fmt::{Debug, Display, Formatter, Result};
+use std::ops::{Add, AddAssign, Index, Mul};
+
+use num_traits::{Float, One, Zero};
+
+use crate::Vector3;
+
 mod add;
 mod mul;
 mod mul_vec4;
-mod test;
-
-use crate::Vector3;
-use num_traits::{Float, One, Zero};
-use std::fmt::{Debug, Display, Formatter, Result};
-use std::ops::{Add, AddAssign, Index, Mul};
 
 #[derive(Debug, Clone)]
 pub struct Matrix4x4<T>
@@ -42,6 +43,10 @@ where
 
     pub fn get(&self, row: usize, column: usize) -> T {
         self.raw_data[row * 4 + column]
+    }
+
+    pub fn get_mut(&mut self, row: usize, column: usize) -> &mut T {
+        &mut self.raw_data[row * 4 + column]
     }
 }
 
@@ -163,6 +168,33 @@ where
         let mut mat = Matrix4x4::zero_matrix();
         mat.set(0, 0, one / (fov_tan * aspect_ratio));
         mat.set(1, 1, one / fov_tan);
+        mat.set(2, 2, -(z_far + z_near) / (z_far - z_near));
+        mat.set(2, 3, -two * z_far * z_near / (z_far - z_near));
+        mat.set(3, 2, -one);
+        mat
+    }
+
+    pub fn new_perspective_projection_2(
+        proj_plane_right: T,
+        proj_plane_left: T,
+        proj_plane_top: T,
+        proj_plane_bottom: T,
+        z_far: T,
+        z_near: T,
+    ) -> Matrix4x4<T> {
+        let one = T::one();
+        let two = one + one;
+        let (r, l, t, b) = (
+            proj_plane_right,
+            proj_plane_left,
+            proj_plane_top,
+            proj_plane_bottom,
+        );
+        let mut mat = Matrix4x4::zero_matrix();
+        mat.set(0, 0, two * z_near / (r - l));
+        mat.set(0, 2, (r + l) / (r - l));
+        mat.set(1, 1, two * z_near / (t - b));
+        mat.set(1, 2, (t + b) / (t - b));
         mat.set(2, 2, -(z_far + z_near) / (z_far - z_near));
         mat.set(2, 3, -two * z_far * z_near / (z_far - z_near));
         mat.set(3, 2, -one);
