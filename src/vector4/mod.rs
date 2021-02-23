@@ -59,15 +59,12 @@ where
     pub fn set_x(&mut self, value: T) {
         self.raw_data[0] = value;
     }
-
     pub fn set_y(&mut self, value: T) {
         self.raw_data[1] = value;
     }
-
     pub fn set_z(&mut self, value: T) {
         self.raw_data[2] = value;
     }
-
     pub fn set_w(&mut self, value: T) {
         self.raw_data[3] = value;
     }
@@ -75,15 +72,12 @@ where
     pub fn x_mut(&mut self) -> &mut T {
         &mut self.raw_data[0]
     }
-
     pub fn y_mut(&mut self) -> &mut T {
         &mut self.raw_data[1]
     }
-
     pub fn z_mut(&mut self) -> &mut T {
         &mut self.raw_data[2]
     }
-
     pub fn w_mut(&mut self) -> &mut T {
         &mut self.raw_data[3]
     }

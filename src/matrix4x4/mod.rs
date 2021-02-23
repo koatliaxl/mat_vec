@@ -48,6 +48,14 @@ where
     pub fn get_mut(&mut self, row: usize, column: usize) -> &mut T {
         &mut self.raw_data[row * 4 + column]
     }
+
+    pub fn size_of_raw_value(&self) -> usize {
+        std::mem::size_of_val(&self.raw_data)
+    }
+
+    pub fn size_of_raw_data() -> usize {
+        std::mem::size_of::<[T; 16]>()
+    }
 }
 
 impl<T> Matrix4x4<T>
