@@ -83,14 +83,13 @@ fn test_mul_vec4() {
 fn test_mul_float() {
     // todo? is this right? count operations too?
     // sequential (non-parallel) 1 multiplication and 3 additions per resulting element
-    let max_number_of_operations = 1 + 3;
+    let max_num_of_operations = 1 + 3;
     /* because values are in range of 1..8 (2^0 .. 2^3),
     8 - because max value of element of resulting matrix is (n * n) * 4, which always < 16 for
     n <= 2.0 except when at least one row in first matrix and column in second matrix
     entirely consist of 2.0 */
     let max_binary_magnitude = 4;
-    let tolerance =
-        f64::EPSILON * (2_u32.pow(max_binary_magnitude) * max_number_of_operations) as f64;
+    let tolerance = f64::EPSILON * (2_u32.pow(max_binary_magnitude) * max_num_of_operations) as f64;
     let mat1 = Matrix4x4::from_array([
         [1.142, 1.673, 1.813, 1.540],
         [1.777, 1.544, 1.309, 1.408],
@@ -111,4 +110,21 @@ fn test_mul_float() {
     ]);
     let mat1_x_mat2 = mat1 * mat2;
     assert!(mat1_x_mat2.almost_eq(correct_mat1_x_mat2, tolerance));
+}
+
+#[test]
+fn test_transpose() {
+    let mat = Matrix4x4::from_array([
+        [0, 5, 3, 8],
+        [7, 27, 9, 4],
+        [93, 52, 40, 35],
+        [89, 2, 6, 1], /* Rustfmt force vertical formatting */
+    ]);
+    let correct_transpose = Matrix4x4::from_array([
+        [0, 7, 93, 89],
+        [5, 27, 52, 2],
+        [3, 9, 40, 6],
+        [8, 4, 35, 1], /* Rustfmt force vertical formatting */
+    ]);
+    assert_eq!(mat.transpose(), correct_transpose);
 }

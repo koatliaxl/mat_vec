@@ -1,13 +1,11 @@
-use std::fmt::{Debug, Display, Formatter, Result};
-use std::ops::{Add, AddAssign, Index, Mul};
-
-use num_traits::{Float, One, Zero};
-
-use crate::Vector3;
-
 mod add;
 mod mul;
 mod mul_vec4;
+
+use crate::Vector3;
+use num_traits::{Float, One, Zero};
+use std::fmt::{Debug, Display, Formatter, Result};
+use std::ops::{Add, AddAssign, Index, Mul};
 
 #[derive(Debug, Clone)]
 pub struct Matrix4x4<T>
@@ -55,6 +53,18 @@ where
 
     pub fn size_of_raw_data() -> usize {
         std::mem::size_of::<[T; 16]>()
+    }
+
+    pub fn transpose(&self) -> Matrix4x4<T> {
+        let mut new_raw_data = [T::default(); 16];
+        for c in 0..4 {
+            for r in 0..4 {
+                new_raw_data[c * 4 + r] = self.raw_data[r * 4 + c];
+            }
+        }
+        Matrix4x4 {
+            raw_data: new_raw_data,
+        }
     }
 }
 

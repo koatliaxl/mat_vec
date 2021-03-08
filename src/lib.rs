@@ -7,8 +7,8 @@ mod vector3;
 mod vector4;
 
 #[cfg(test)]
-pub mod tests {
-    pub mod mat4x4;
+mod tests {
+    mod mat4x4;
 }
 
 mod test_support {
