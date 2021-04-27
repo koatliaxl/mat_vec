@@ -10,7 +10,7 @@ use std::ops::{Add, AddAssign, Index, Mul};
 #[derive(Debug, Clone)]
 pub struct Matrix4x4<T>
 where
-    T: Add<Output = T> + Mul<Output = T> + Copy + AddAssign + Default,
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default,
 {
     raw_data: [T; 16],
 }
@@ -66,11 +66,15 @@ where
             raw_data: new_raw_data,
         }
     }
+
+    pub unsafe fn get_raw_data(&self) -> &[T; 16] {
+        &self.raw_data
+    }
 }
 
 impl<T> Matrix4x4<T>
 where
-    T: Copy + Mul<Output = T> + AddAssign + Zero + Default,
+    T: Copy + Mul<Output = T> + AddAssign + Default + Zero,
 {
     pub fn zero_matrix() -> Matrix4x4<T> {
         Matrix4x4 {
@@ -81,7 +85,7 @@ where
 
 impl<T> Matrix4x4<T>
 where
-    T: Copy + AddAssign + Zero + One + Default,
+    T: Copy + AddAssign + Default + Zero + One,
 {
     pub fn new_scaling(sx: T, sy: T, sz: T) -> Matrix4x4<T> {
         let mut mat = Matrix4x4::zero_matrix();
@@ -111,7 +115,7 @@ where
 
 impl<T> Matrix4x4<T>
 where
-    T: AddAssign + Float + Default,
+    T: AddAssign + Default + Float,
 {
     pub fn new_x_rotation(degrees: T) -> Matrix4x4<T> {
         let mut mat = Matrix4x4::identity_matrix();
@@ -222,7 +226,7 @@ where
 
 impl<T> Index<(usize, usize)> for Matrix4x4<T>
 where
-    T: Add<Output = T> + Mul<Output = T> + Copy + AddAssign + Default,
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default,
 {
     type Output = T;
 
@@ -233,7 +237,7 @@ where
 
 impl<T> Display for Matrix4x4<T>
 where
-    T: Display + Add<Output = T> + Mul<Output = T> + Copy + AddAssign + Default,
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f)?;
@@ -253,7 +257,7 @@ where
 
 impl<T> Default for Matrix4x4<T>
 where
-    T: Add<Output = T> + Mul<Output = T> + Copy + AddAssign + Default,
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default,
 {
     fn default() -> Self {
         Matrix4x4 {
@@ -264,7 +268,7 @@ where
 
 impl<T> PartialEq for Matrix4x4<T>
 where
-    T: Add<Output = T> + Mul<Output = T> + Copy + AddAssign + PartialEq + Default,
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
         for r in 0..4 {
@@ -278,6 +282,6 @@ where
     }
 }
 impl<T> Eq for Matrix4x4<T> where
-    T: Add<Output = T> + Mul<Output = T> + Copy + AddAssign + PartialEq + Eq + Default
+    T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + PartialEq + Eq
 {
 }
