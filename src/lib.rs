@@ -9,6 +9,7 @@ mod vector4;
 #[cfg(test)]
 mod tests {
     mod mat4x4;
+    mod vec3;
 }
 
 mod test_support {
