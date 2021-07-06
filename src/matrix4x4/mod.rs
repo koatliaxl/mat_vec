@@ -7,6 +7,8 @@ use num_traits::{Float, One, Zero};
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::ops::{Add, AddAssign, Index, Mul};
 
+//todo: relax "AddAssign" trait requirement
+
 #[derive(Debug, Clone)]
 pub struct Matrix4x4<T>
 where
@@ -222,6 +224,24 @@ where
         mat.set(3, 2, -one);
         mat
     }
+
+    pub fn new_orthographic_projection(
+        proj_plane_width: T,
+        proj_plane_height: T,
+        z_far: T,
+        z_near: T,
+    ) -> Matrix4x4<T> {
+        let one = T::one();
+        let two = one + one;
+        let (w, h) = (proj_plane_width, proj_plane_height);
+        let mut mat = Matrix4x4::zero_matrix();
+        mat.set(0, 0, two / w);
+        mat.set(1, 1, two / h);
+        mat.set(2, 2, -two / (z_far - z_near));
+        mat.set(2, 3, -(z_far + z_near) / (z_far - z_near));
+        mat.set(3, 3, one);
+        mat
+    }
 }
 
 impl<T> Index<(usize, usize)> for Matrix4x4<T>
@@ -239,6 +259,7 @@ impl<T> Display for Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
+    //todo [equal indentation]/[regular layout] for elements (via to_string() and max Sting length?)
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f)?;
         for r in 0..4 {

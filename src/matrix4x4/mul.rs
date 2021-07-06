@@ -1,6 +1,8 @@
 use super::Matrix4x4;
 use std::ops::{Add, AddAssign, Mul};
 
+//todo macro
+
 impl<T> Mul for Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default,

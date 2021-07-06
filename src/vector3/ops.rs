@@ -28,7 +28,7 @@ where
 
 impl<T> Neg for Vector3<T>
 where
-    T: Neg<Output = T> + Copy,
+    T: Copy + Neg<Output = T>,
 {
     type Output = Vector3<T>;
 
@@ -101,14 +101,60 @@ where
         }
     }
 }
-impl Mul<Vector3<f32>> for f32 {
-    type Output = Vector3<f32>;
+macro_rules! impl_scalar_mul {
+    ($Scalar:ty, $VecElem:ty) => {
+        impl Mul<$Scalar> for Vector3<$VecElem> {
+            type Output = Vector3<$VecElem>;
 
-    fn mul(self, rhs: Vector3<f32>) -> Self::Output {
-        rhs * self
-    }
+            fn mul(self, rhs: $Scalar) -> Self::Output {
+                self * (rhs as $VecElem)
+            }
+        }
+    };
 }
-// todo for other primitive numbers; via macro?
+impl_scalar_mul!(i32, f32);
+impl_scalar_mul!(i64, f32);
+impl_scalar_mul!(u32, f32);
+impl_scalar_mul!(u64, f32);
+impl_scalar_mul!(f64, f32);
+impl_scalar_mul!(i32, f64);
+impl_scalar_mul!(i64, f64);
+impl_scalar_mul!(u32, f64);
+impl_scalar_mul!(u64, f64);
+impl_scalar_mul!(f32, f64);
+
+macro_rules! impl_scalar_mul_vec {
+    ($Scalar:ty, $VecElem:ty) => {
+        impl Mul<Vector3<$VecElem>> for $Scalar {
+            type Output = Vector3<$VecElem>;
+
+            fn mul(self, rhs: Vector3<$VecElem>) -> Self::Output {
+                rhs * (self as $VecElem)
+            }
+        }
+    };
+    ($Scalar:ty) => {
+        impl Mul<Vector3<$Scalar>> for $Scalar {
+            type Output = Vector3<$Scalar>;
+
+            fn mul(self, rhs: Vector3<$Scalar>) -> Self::Output {
+                rhs * self
+            }
+        }
+    };
+}
+impl_scalar_mul_vec!(f32);
+impl_scalar_mul_vec!(f64, f32);
+impl_scalar_mul_vec!(i32, f32);
+impl_scalar_mul_vec!(i64, f32);
+impl_scalar_mul_vec!(u32, f32);
+impl_scalar_mul_vec!(u64, f32);
+impl_scalar_mul_vec!(f64);
+impl_scalar_mul_vec!(f32, f64);
+impl_scalar_mul_vec!(i32, f64);
+impl_scalar_mul_vec!(i64, f64);
+impl_scalar_mul_vec!(u32, f64);
+impl_scalar_mul_vec!(u64, f64);
 
 impl<T> Vector3<T>
 where
