@@ -146,9 +146,15 @@ macro_rules! impl_scalar_mul_vec {
 impl_scalar_mul_vec!(f32);
 impl_scalar_mul_vec!(f64, f32);
 impl_scalar_mul_vec!(i32, f32);
+impl_scalar_mul_vec!(i64, f32);
+impl_scalar_mul_vec!(u32, f32);
+impl_scalar_mul_vec!(u64, f32);
 impl_scalar_mul_vec!(f64);
 impl_scalar_mul_vec!(f32, f64);
 impl_scalar_mul_vec!(i32, f64);
+impl_scalar_mul_vec!(i64, f64);
+impl_scalar_mul_vec!(u32, f64);
+impl_scalar_mul_vec!(u64, f64);
 
 impl<T> Vector3<T>
 where

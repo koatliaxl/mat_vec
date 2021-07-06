@@ -7,7 +7,7 @@ use num_traits::{Float, One, Zero};
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::ops::{Add, AddAssign, Index, Mul};
 
-//todo: relax AddAssign trait requirement
+//todo: relax "AddAssign" trait requirement
 
 #[derive(Debug, Clone)]
 pub struct Matrix4x4<T>
