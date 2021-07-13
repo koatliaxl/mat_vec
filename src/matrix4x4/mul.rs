@@ -2,6 +2,7 @@ use super::Matrix4x4;
 use std::ops::{Add, AddAssign, Mul};
 
 //todo macro
+//todo impl MulAssign
 
 impl<T> Mul for Matrix4x4<T>
 where

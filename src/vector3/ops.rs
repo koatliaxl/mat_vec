@@ -117,11 +117,15 @@ impl_scalar_mul!(i64, f32);
 impl_scalar_mul!(u32, f32);
 impl_scalar_mul!(u64, f32);
 impl_scalar_mul!(f64, f32);
+impl_scalar_mul!(usize, f32);
+impl_scalar_mul!(isize, f32);
 impl_scalar_mul!(i32, f64);
 impl_scalar_mul!(i64, f64);
 impl_scalar_mul!(u32, f64);
 impl_scalar_mul!(u64, f64);
 impl_scalar_mul!(f32, f64);
+impl_scalar_mul!(usize, f64);
+impl_scalar_mul!(isize, f64);
 
 macro_rules! impl_scalar_mul_vec {
     ($Scalar:ty, $VecElem:ty) => {
@@ -149,12 +153,16 @@ impl_scalar_mul_vec!(i32, f32);
 impl_scalar_mul_vec!(i64, f32);
 impl_scalar_mul_vec!(u32, f32);
 impl_scalar_mul_vec!(u64, f32);
+impl_scalar_mul_vec!(usize, f32);
+impl_scalar_mul_vec!(isize, f32);
 impl_scalar_mul_vec!(f64);
 impl_scalar_mul_vec!(f32, f64);
 impl_scalar_mul_vec!(i32, f64);
 impl_scalar_mul_vec!(i64, f64);
 impl_scalar_mul_vec!(u32, f64);
 impl_scalar_mul_vec!(u64, f64);
+impl_scalar_mul_vec!(usize, f64);
+impl_scalar_mul_vec!(isize, f64);
 
 impl<T> Vector3<T>
 where

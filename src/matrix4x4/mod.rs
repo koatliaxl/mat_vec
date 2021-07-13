@@ -98,6 +98,10 @@ where
         mat
     }
 
+    pub fn new_uniform_scaling(scale: T) -> Matrix4x4<T> {
+        Self::new_scaling(scale, scale, scale)
+    }
+
     pub fn new_translation(tx: T, ty: T, tz: T) -> Matrix4x4<T> {
         let mut mat = Matrix4x4::identity_matrix();
         mat.set(0, 3, tx);
@@ -155,6 +159,7 @@ where
         mat
     }
 
+    // Doesn't automatically normalize rotation axis / Assumes that rotation vector is normailized
     pub fn new_rotation(degrees: T, axis: Vector3<T>) -> Matrix4x4<T> {
         let (rx, ry, rz) = (axis.x(), axis.y(), axis.z());
         let ang_cos = degrees.to_radians().cos();
@@ -259,7 +264,7 @@ impl<T> Display for Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
-    //todo [equal indentation]/[regular layout] for elements (via to_string() and max Sting length?)
+    //todo? [equal indentation]/[regular layout] for elements
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f)?;
         for r in 0..4 {
