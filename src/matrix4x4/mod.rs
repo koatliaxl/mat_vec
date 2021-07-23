@@ -159,7 +159,7 @@ where
         mat
     }
 
-    // Doesn't automatically normalize rotation axis / Assumes that rotation vector is normailized
+    // Doesn't automatically normalize rotation axis / Assumes that rotation vector is normalized
     pub fn new_rotation(degrees: T, axis: Vector3<T>) -> Matrix4x4<T> {
         let (rx, ry, rz) = (axis.x(), axis.y(), axis.z());
         let ang_cos = degrees.to_radians().cos();
@@ -203,7 +203,7 @@ where
         mat
     }
 
-    pub fn new_perspective_projection_2(
+    pub fn new_perspective_projection_by_dimensions(
         proj_plane_right: T,
         proj_plane_left: T,
         proj_plane_top: T,
@@ -230,6 +230,25 @@ where
         mat
     }
 
+    #[deprecated]
+    pub fn new_perspective_projection_2(
+        proj_plane_right: T,
+        proj_plane_left: T,
+        proj_plane_top: T,
+        proj_plane_bottom: T,
+        z_far: T,
+        z_near: T,
+    ) -> Matrix4x4<T> {
+        Matrix4x4::new_perspective_projection_by_dimensions(
+            proj_plane_right,
+            proj_plane_left,
+            proj_plane_top,
+            proj_plane_bottom,
+            z_far,
+            z_near,
+        )
+    }
+
     pub fn new_orthographic_projection(
         proj_plane_width: T,
         proj_plane_height: T,
@@ -246,6 +265,33 @@ where
         mat.set(2, 3, -(z_far + z_near) / (z_far - z_near));
         mat.set(3, 3, one);
         mat
+    }
+
+    #[allow(non_snake_case)]
+    pub fn new_LookAt_matrix(
+        viewer_position: Vector3<T>,
+        view_direction: Vector3<T>,
+        world_up_direction: Vector3<T>,
+    ) -> Matrix4x4<T> {
+        let view_inv_dir = -view_direction;
+        let view_right = !(world_up_direction ^ view_inv_dir);
+        let view_up = !(view_inv_dir ^ view_right);
+        let (rx, ry, rz) = view_right.get_components();
+        let (ux, uy, uz) = view_up.get_components();
+        let (dx, dy, dz) = view_inv_dir.get_components();
+        let ZERO = T::zero();
+        let rotation = Matrix4x4::from_array([
+            [rx, ry, rz, ZERO],
+            [ux, uy, uz, ZERO],
+            [dx, dy, dz, ZERO],
+            [ZERO, ZERO, ZERO, T::one()],
+        ]);
+        let translation = Matrix4x4::new_translation(
+            -viewer_position.x(),
+            -viewer_position.y(),
+            -viewer_position.z(),
+        );
+        rotation * translation
     }
 }
 
