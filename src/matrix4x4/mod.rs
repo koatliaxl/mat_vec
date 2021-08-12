@@ -1,4 +1,5 @@
 mod add;
+mod format;
 mod mul;
 mod mul_vec4;
 
@@ -310,7 +311,6 @@ impl<T> Display for Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
-    //todo? [equal indentation]/[regular layout] for elements
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f)?;
         for r in 0..4 {

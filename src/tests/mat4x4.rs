@@ -61,6 +61,7 @@ fn test_mul() {
         [-73, 16, -16, 49],
     ]);
     assert_eq!(m4 * m5, correct_m4_x_m5);
+    println!("{}\n{}", correct_m1_x_m2, correct_m4_x_m5);
 }
 
 #[test]
@@ -109,6 +110,8 @@ fn test_mul_float() {
         [9.430768, 9.849868, 10.50836, 8.89569],
     ]);
     let mat1_x_mat2 = mat1 * mat2;
+    // todo with negatives
+    println!("{}", correct_mat1_x_mat2);
     assert!(mat1_x_mat2.almost_eq(correct_mat1_x_mat2, tolerance));
 }
 
@@ -127,4 +130,33 @@ fn test_transpose() {
         [8, 4, 35, 1], /* Rustfmt force vertical formatting */
     ]);
     assert_eq!(mat.transpose(), correct_transpose);
+}
+
+#[test]
+fn test_formatting() {
+    //todo other values
+    let mat1 = Matrix4x4::from_array([
+        [1, 0, 5, 9], /* Rustfmt force vertical formatting */
+        [-23, 325, 24, 4],
+        [7, 8, -5, 1],
+        [-4, 2, 3, 6],
+    ]);
+    let mat1_align_rows = String::new()
+        + "|   1   0  5 9 |\n"
+        + "| -23 325 24 4 |\n"
+        + "|   7   8 -5 1 |\n"
+        + "|  -4   2  3 6 |\n";
+    let mat1_uniform_cols = String::new()
+        + "|   1   0   5   9 |\n"
+        + "| -23 325  24   4 |\n"
+        + "|   7   8  -5   1 |\n"
+        + "|  -4   2   3   6 |\n";
+    assert_eq!(mat1.format_uniform_columns(), mat1_uniform_cols);
+    assert_eq!(mat1.format_align_rows(), mat1_align_rows);
+    /*println!(
+        "{}\n\n{}\n\n{}",
+        mat1.format_align_rows(),
+        mat1_align_rows,
+        mat1_uniform_cols
+    );*/
 }
