@@ -81,15 +81,6 @@ fn test_mul_vec4() {
 
 #[test]
 fn test_mul_float() {
-    // todo? is this right? count operations too?
-    // sequential (non-parallel) 1 multiplication and 3 additions per resulting element
-    let max_num_of_operations = 1 + 3;
-    /* because values are in range of 1..8 (2^0 .. 2^3),
-    8 - because max value of element of resulting matrix is (n * n) * 4, which always < 16 for
-    n <= 2.0 except when at least one row in first matrix and column in second matrix
-    entirely consist of 2.0 */
-    let max_binary_magnitude = 4;
-    let tolerance = f64::EPSILON * (2_u32.pow(max_binary_magnitude) * max_num_of_operations) as f64;
     let mat1 = Matrix4x4::from_array([
         [1.142, 1.673, 1.813, 1.540],
         [1.777, 1.544, 1.309, 1.408],
@@ -108,8 +99,17 @@ fn test_mul_float() {
         [7.93923, 8.487401, 8.576008, 7.358967],
         [9.430768, 9.849868, 10.50836, 8.89569],
     ]);
-    let mat1_x_mat2 = mat1 * mat2;
-    assert!(mat1_x_mat2.almost_eq(correct_mat1_x_mat2, tolerance));
+    // todo? is this right? count operations too (and not only results)?
+    // sequential (non-parallel) 1 multiplication and 3 additions per resulting element
+    let max_num_of_operations = 1 + 3;
+    /* because values in resulting matrix can only be at range of [1..16), which corresponds to
+    binary orders of magnitude [2^0..2^4), maximum possible magnitude of resulting element is 3;
+    smaller than 16 - because maximum value of element of resulting matrix is (n * n) * 4, which
+    always < 16 for n <= 2.0 except when at least one row in first matrix and column in second
+    matrix entirely consist of 2.0 */
+    let max_binary_magnitude = 3; // (order of magnitude)
+    let tolerance = f64::EPSILON * (2_u32.pow(max_binary_magnitude) * max_num_of_operations) as f64;
+    assert!((mat1 * mat2).almost_eq(correct_mat1_x_mat2, tolerance));
 }
 
 #[test]

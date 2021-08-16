@@ -165,21 +165,18 @@ where
         let ang_cos = degrees.to_radians().cos();
         let ang_sin = degrees.to_radians().sin();
         let one_minus_cos = T::one() - ang_cos;
-        let rx_ry_1_m_cos = rx * ry * one_minus_cos;
-        let ry_rz_1_m_cos = ry * rz * one_minus_cos;
-        let rz_rx_1_m_cos = rz * rx * one_minus_cos;
         let rx_sin = rx * ang_sin;
         let ry_sin = ry * ang_sin;
         let rz_sin = rz * ang_sin;
         let mut mat = Matrix4x4::zero_matrix();
         mat.set(0, 0, ang_cos + rx * rx * one_minus_cos);
-        mat.set(0, 1, rx_ry_1_m_cos - rz_sin);
-        mat.set(0, 2, rz_rx_1_m_cos + ry_sin);
-        mat.set(1, 0, rx_ry_1_m_cos + rz_sin);
+        mat.set(0, 1, rx * ry * one_minus_cos - rz_sin);
+        mat.set(0, 2, rz * rx * one_minus_cos + ry_sin);
+        mat.set(1, 0, rx * ry * one_minus_cos + rz_sin);
         mat.set(1, 1, ang_cos + ry * ry * one_minus_cos);
-        mat.set(1, 2, ry_rz_1_m_cos - rx_sin);
-        mat.set(2, 0, rz_rx_1_m_cos - ry_sin);
-        mat.set(2, 1, ry_rz_1_m_cos + rx_sin);
+        mat.set(1, 2, ry * rz * one_minus_cos - rx_sin);
+        mat.set(2, 0, rz * rx * one_minus_cos - ry_sin);
+        mat.set(2, 1, ry * rz * one_minus_cos + rx_sin);
         mat.set(2, 2, ang_cos + rz * rz * one_minus_cos);
         mat.set(3, 3, T::one());
         mat
@@ -310,7 +307,6 @@ impl<T> Display for Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
-    //todo? [equal indentation]/[regular layout] for elements
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f)?;
         for r in 0..4 {

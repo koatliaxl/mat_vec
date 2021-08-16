@@ -1,4 +1,4 @@
-use crate::Vector3;
+use super::Vector3;
 use num_traits::Float;
 use std::ops::{Add, AddAssign, BitXor, Mul, Neg, Not, Rem, Sub, SubAssign};
 
@@ -87,82 +87,6 @@ where
         self.raw_data[2] = self.z() - rhs.z();
     }
 }
-
-/// Scalar Multiplication
-impl<T> Mul<T> for Vector3<T>
-where
-    T: Copy + Mul<Output = T>,
-{
-    type Output = Vector3<T>;
-
-    fn mul(self, rhs: T) -> Self::Output {
-        Vector3 {
-            raw_data: [self.x() * rhs, self.y() * rhs, self.z() * rhs],
-        }
-    }
-}
-macro_rules! impl_scalar_mul {
-    ($Scalar:ty, $VecElem:ty) => {
-        impl Mul<$Scalar> for Vector3<$VecElem> {
-            type Output = Vector3<$VecElem>;
-
-            fn mul(self, rhs: $Scalar) -> Self::Output {
-                self * (rhs as $VecElem)
-            }
-        }
-    };
-}
-impl_scalar_mul!(i32, f32);
-impl_scalar_mul!(i64, f32);
-impl_scalar_mul!(u32, f32);
-impl_scalar_mul!(u64, f32);
-impl_scalar_mul!(f64, f32);
-impl_scalar_mul!(usize, f32);
-impl_scalar_mul!(isize, f32);
-impl_scalar_mul!(i32, f64);
-impl_scalar_mul!(i64, f64);
-impl_scalar_mul!(u32, f64);
-impl_scalar_mul!(u64, f64);
-impl_scalar_mul!(f32, f64);
-impl_scalar_mul!(usize, f64);
-impl_scalar_mul!(isize, f64);
-
-macro_rules! impl_scalar_mul_vec {
-    ($Scalar:ty, $VecElem:ty) => {
-        impl Mul<Vector3<$VecElem>> for $Scalar {
-            type Output = Vector3<$VecElem>;
-
-            fn mul(self, rhs: Vector3<$VecElem>) -> Self::Output {
-                rhs * (self as $VecElem)
-            }
-        }
-    };
-    ($Scalar:ty) => {
-        impl Mul<Vector3<$Scalar>> for $Scalar {
-            type Output = Vector3<$Scalar>;
-
-            fn mul(self, rhs: Vector3<$Scalar>) -> Self::Output {
-                rhs * self
-            }
-        }
-    };
-}
-impl_scalar_mul_vec!(f32);
-impl_scalar_mul_vec!(f64, f32);
-impl_scalar_mul_vec!(i32, f32);
-impl_scalar_mul_vec!(i64, f32);
-impl_scalar_mul_vec!(u32, f32);
-impl_scalar_mul_vec!(u64, f32);
-impl_scalar_mul_vec!(usize, f32);
-impl_scalar_mul_vec!(isize, f32);
-impl_scalar_mul_vec!(f64);
-impl_scalar_mul_vec!(f32, f64);
-impl_scalar_mul_vec!(i32, f64);
-impl_scalar_mul_vec!(i64, f64);
-impl_scalar_mul_vec!(u32, f64);
-impl_scalar_mul_vec!(u64, f64);
-impl_scalar_mul_vec!(usize, f64);
-impl_scalar_mul_vec!(isize, f64);
 
 impl<T> Vector3<T>
 where

@@ -1,4 +1,5 @@
 mod ops;
+mod scalar_mul;
 
 use num_traits::{AsPrimitive, Float};
 use std::ops::{Add, Index, IndexMut, Mul};
