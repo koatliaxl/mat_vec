@@ -1,4 +1,5 @@
 mod add;
+mod format;
 mod mul;
 mod mul_vec4;
 
