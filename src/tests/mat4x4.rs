@@ -141,25 +141,19 @@ fn test_formatting() {
         [-4, 2, 3, 6],
     ]);
     let mat1_align_rows = "\
-        |   1,   0,  5, 9 |\n\
-        | -23, 325, 24, 4 |\n\
-        |   7,   8, -5, 1 |\n\
-        |  -4,   2,  3, 6 |\n\
+        |   1    0   5  9 |\n\
+        | -23  325  24  4 |\n\
+        |   7    8  -5  1 |\n\
+        |  -4    2   3  6 |\n\
     ";
     let mat1_uniform_cols = "\
-        |   1,   0,   5,   9 |\n\
-        | -23, 325,  24,   4 |\n\
-        |   7,   8,  -5,   1 |\n\
-        |  -4,   2,   3,   6 |\n\
+        |   1    0    5    9 |\n\
+        | -23  325   24    4 |\n\
+        |   7    8   -5    1 |\n\
+        |  -4    2    3    6 |\n\
     ";
     assert_eq!(mat1.format_uniform_columns(), mat1_uniform_cols);
     assert_eq!(mat1.format_align_rows(), mat1_align_rows);
-    /*println!(
-        "{}\n\n{}\n\n{}",
-        mat1.format_align_rows(),
-        mat1_align_rows,
-        mat1_uniform_cols
-    );*/
     let mat2 = Matrix4x4::from_array([
         [2.71, 3.14, 1.61, 8.0],
         [-1.4, 2426.85, 7.0, 5.6],
@@ -172,19 +166,12 @@ fn test_formatting() {
         |  7.3      8.134  0.14329  1.2 |\n\
         |  0        3.2    4.6      9.5 |\n\
     ";
-    let mat2_with_precision = "\
+    let mat2_with_precision_2 = "\
         |  2.71     3.14  1.61  8   |\n\
         | -1.4   2426.85  7     5.6 |\n\
         |  7.3      8.13  0.14  1.2 |\n\
         |  0        3.2   4.6   9.5 |\n\
     ";
-    println!(
-        "{}\n\n{}\n\n{}\n\n{}\n\n{}",
-        mat2.format_uniform_columns(),
-        mat2.format_align_rows(),
-        mat2,
-        mat2_align_magnitudes,
-        mat2.format_align_magnitudes(),
-    );
-    println!("{}", mat2.format_with_precision(3));
+    assert_eq!(mat2.format_align_magnitudes(), mat2_align_magnitudes);
+    assert_eq!(mat2.format_with_precision(2), mat2_with_precision_2);
 }
