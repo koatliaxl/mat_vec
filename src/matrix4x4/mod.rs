@@ -70,7 +70,7 @@ where
         }
     }
 
-    pub unsafe fn get_raw_data(&self) -> &[T; 16] {
+    pub fn get_raw_data(&self) -> &[T; 16] {
         &self.raw_data
     }
 }
@@ -109,6 +109,10 @@ where
         mat.set(1, 3, ty);
         mat.set(2, 3, tz);
         mat
+    }
+
+    pub fn new_translation_from_vec(vec: Vector3<T>) -> Matrix4x4<T> {
+        Matrix4x4::new_translation(vec.x(), vec.y(), vec.z())
     }
 
     pub fn identity_matrix() -> Matrix4x4<T> {
@@ -354,3 +358,56 @@ impl<T> Eq for Matrix4x4<T> where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + PartialEq + Eq
 {
 }
+
+macro_rules! impl_for_float {
+    ($float:ty) => {
+        impl Matrix4x4<$float> {
+            pub const IDENTITY_MATRIX: Matrix4x4<$float> = Matrix4x4::<$float>::const_identity();
+            pub const ZERO_MATRIX: Matrix4x4<$float> = Matrix4x4::<$float>::const_zero();
+
+            const fn const_identity() -> Matrix4x4<$float> {
+                let mut raw_data = [0.0; 16];
+                raw_data[0] = 1.0;
+                raw_data[5] = 1.0;
+                raw_data[10] = 1.0;
+                raw_data[15] = 1.0;
+                Matrix4x4 { raw_data }
+            }
+
+            const fn const_zero() -> Matrix4x4<$float> {
+                Matrix4x4 {
+                    raw_data: [0.0; 16],
+                }
+            }
+        }
+    };
+}
+macro_rules! impl_for_integer {
+    ($int:ty) => {
+        impl Matrix4x4<$int> {
+            pub const IDENTITY_MATRIX: Matrix4x4<$int> = Matrix4x4::<$int>::const_identity();
+            pub const ZERO_MATRIX: Matrix4x4<$int> = Matrix4x4::<$int>::const_zero();
+
+            const fn const_identity() -> Matrix4x4<$int> {
+                let mut raw_data = [0; 16];
+                raw_data[0] = 1;
+                raw_data[5] = 1;
+                raw_data[10] = 1;
+                raw_data[15] = 1;
+                Matrix4x4 { raw_data }
+            }
+
+            const fn const_zero() -> Matrix4x4<$int> {
+                Matrix4x4 { raw_data: [0; 16] }
+            }
+        }
+    };
+}
+impl_for_float!(f32);
+impl_for_float!(f64);
+impl_for_integer!(i32);
+impl_for_integer!(u32);
+impl_for_integer!(i64);
+impl_for_integer!(u64);
+impl_for_integer!(usize);
+impl_for_integer!(isize);

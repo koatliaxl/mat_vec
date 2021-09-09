@@ -173,3 +173,16 @@ fn test_formatting() {
     assert_eq!(mat2.format_align_magnitudes(), mat2_align_magnitudes);
     assert_eq!(mat2.format_with_precision(2), mat2_with_precision_2);
 }
+
+#[test]
+// (test macro expansion)
+fn test_macro_const() {
+    let identity_f32 = Matrix4x4::<f32>::identity_matrix();
+    assert_eq!(identity_f32, Matrix4x4::<f32>::IDENTITY_MATRIX);
+    let identity_i32 = Matrix4x4::<i32>::identity_matrix();
+    assert_eq!(identity_i32, Matrix4x4::<i32>::IDENTITY_MATRIX);
+    let zero_f64 = Matrix4x4::<f64>::zero_matrix();
+    assert_eq!(zero_f64, Matrix4x4::<f64>::ZERO_MATRIX);
+    let zero_u32 = Matrix4x4::<u32>::zero_matrix();
+    assert_eq!(zero_u32, Matrix4x4::<u32>::ZERO_MATRIX);
+}
