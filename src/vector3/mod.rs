@@ -9,6 +9,7 @@ pub struct Vector3<T>
 where
     T: Copy,
 {
+    // todo? change inner structure
     raw_data: [T; 3],
 }
 
@@ -21,6 +22,8 @@ where
             raw_data: [x, y, z],
         }
     }
+
+    //todo new_uniform()
 
     pub fn from_array(arr: [T; 3]) -> Vector3<T> {
         Vector3 { raw_data: arr }
@@ -130,3 +133,16 @@ where
         square_len.as_().sqrt()
     }
 }
+
+impl<T> Default for Vector3<T>
+where
+    T: Copy + Default,
+{
+    fn default() -> Self {
+        Vector3 {
+            raw_data: [T::default(); 3],
+        }
+    }
+}
+
+// todo Display
