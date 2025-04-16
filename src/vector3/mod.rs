@@ -1,3 +1,4 @@
+mod conv;
 mod ops;
 mod scalar_mul;
 

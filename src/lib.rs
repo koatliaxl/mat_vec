@@ -8,6 +8,7 @@ mod vector4;
 
 #[cfg(test)]
 mod tests {
+    mod conversions;
     mod mat4x4;
     mod vec3;
 }
