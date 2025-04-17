@@ -95,6 +95,18 @@ where
     }
 }
 
+impl<T> Vector4<T>
+where
+    T: Copy + One,
+{
+    // Vector which is translates by the translation matrix
+    pub fn new_translatable(x: T, y: T, z: T) -> Vector4<T> {
+        Vector4 {
+            raw_data: [x, y, z, T::one()],
+        }
+    }
+}
+
 //todo? bounds check
 impl<T> Index<usize> for Vector4<T>
 where
