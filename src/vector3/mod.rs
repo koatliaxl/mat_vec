@@ -3,6 +3,7 @@ mod ops;
 mod scalar_mul;
 
 use num_traits::{AsPrimitive, Float};
+use std::fmt::{Display, Formatter};
 use std::ops::{Add, Index, IndexMut, Mul};
 
 #[derive(Copy, Clone, Debug)]
@@ -146,4 +147,17 @@ where
     }
 }
 
-// todo Display
+impl<T> Display for Vector3<T>
+where
+    T: Copy + Display,
+{
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        writeln!(f)?;
+        writeln!(
+            f,
+            "[{}, {}, {}]",
+            self.raw_data[0], self.raw_data[1], self.raw_data[2]
+        )?;
+        Ok(())
+    }
+}
