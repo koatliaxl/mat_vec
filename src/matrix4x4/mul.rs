@@ -1,8 +1,6 @@
 use super::Matrix4x4;
 use std::ops::{Add, AddAssign, Mul, MulAssign};
 
-//todo impl MulAssign
-
 macro_rules! multiply {
     ($L:ty, $R:ty) => {
         impl<T> Mul<$L> for $R

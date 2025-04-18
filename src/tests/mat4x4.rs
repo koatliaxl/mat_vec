@@ -1,6 +1,6 @@
 use crate::test_support::AlmostEq;
-use crate::Matrix4x4;
 use crate::Vector4;
+use crate::{Matrix4x4, Vector3};
 
 #[test]
 fn test_mul() {
@@ -185,4 +185,20 @@ fn test_macro_const() {
     assert_eq!(zero_f64, Matrix4x4::<f64>::ZERO_MATRIX);
     let zero_u32 = Matrix4x4::<u32>::zero_matrix();
     assert_eq!(zero_u32, Matrix4x4::<u32>::ZERO_MATRIX);
+}
+
+#[test]
+fn test_inverted_matrices() {
+    let a = Matrix4x4::new_LookAt_matrix(
+        Vector3::new(2.6, -3.1, 5.2),
+        Vector3::new(0.0, 0.0, -1.0),
+        Vector3::new(0.0, 1.0, 0.0),
+    );
+    let b = Matrix4x4::inv_LookAt_matrix(
+        Vector3::new(2.6, -3.1, 5.2),
+        Vector3::new(0.0, 0.0, -1.0),
+        Vector3::new(0.0, 1.0, 0.0),
+    );
+    let mut cor = Matrix4x4::<f64>::IDENTITY_MATRIX;
+    assert_eq!(a * b, cor);
 }

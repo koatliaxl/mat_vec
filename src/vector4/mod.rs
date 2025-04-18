@@ -2,7 +2,7 @@ mod ops;
 
 //use crate::Vector3;
 use crate::Vector3;
-use num_traits::{One, Zero};
+use num_traits::{Float, One, Zero};
 use std::fmt::Debug;
 use std::ops::{Index, IndexMut};
 
@@ -97,7 +97,7 @@ where
 
 impl<T> Vector4<T>
 where
-    T: Copy + One,
+    T: Copy + Float,
 {
     // Vector which is translates by the translation matrix
     pub fn new_translatable(x: T, y: T, z: T) -> Vector4<T> {
@@ -107,7 +107,6 @@ where
     }
 }
 
-//todo? bounds check
 impl<T> Index<usize> for Vector4<T>
 where
     T: Copy,
@@ -115,6 +114,12 @@ where
     type Output = T;
 
     fn index(&self, index: usize) -> &Self::Output {
+        #[cfg(debug_assertions)]
+        {
+            if index > 3 {
+                panic!("Vector index out of bounds")
+            }
+        }
         &self.raw_data[index]
     }
 }
@@ -124,6 +129,12 @@ where
     T: Copy,
 {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        #[cfg(debug_assertions)]
+        {
+            if index > 3 {
+                panic!("Vector index out of bounds")
+            }
+        }
         &mut self.raw_data[index]
     }
 }

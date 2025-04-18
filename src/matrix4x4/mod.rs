@@ -295,6 +295,34 @@ where
         );
         rotation * translation
     }
+
+    // Inverted look-at matrix
+    #[allow(non_snake_case)]
+    pub fn inv_LookAt_matrix(
+        viewer_position: Vector3<T>,
+        view_direction: Vector3<T>,
+        world_up_direction: Vector3<T>,
+    ) -> Matrix4x4<T> {
+        let view_inv_dir = -view_direction;
+        let view_right = !(world_up_direction ^ view_inv_dir);
+        let view_up = !(view_inv_dir ^ view_right);
+        let (rx, ry, rz) = view_right.get_components();
+        let (ux, uy, uz) = view_up.get_components();
+        let (dx, dy, dz) = view_inv_dir.get_components();
+        let ZERO = T::zero();
+        let inv_rotation = Matrix4x4::from_array([
+            [rx, ux, dx, ZERO],
+            [ry, uy, dy, ZERO],
+            [rz, uz, dz, ZERO],
+            [ZERO, ZERO, ZERO, T::one()],
+        ]);
+        let inv_translation = Matrix4x4::new_translation(
+            viewer_position.x(),
+            viewer_position.y(),
+            viewer_position.z(),
+        );
+        inv_rotation * inv_translation
+    }
 }
 
 impl<T> Index<(usize, usize)> for Matrix4x4<T>
