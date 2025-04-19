@@ -199,6 +199,9 @@ fn test_inverted_matrices() {
         Vector3::new(0.0, 0.0, -1.0),
         Vector3::new(0.0, 1.0, 0.0),
     );
-    let mut cor = Matrix4x4::<f64>::IDENTITY_MATRIX;
+    let cor = Matrix4x4::<f64>::IDENTITY_MATRIX;
     assert_eq!(a * b, cor);
+    let a = Matrix4x4::new_orthographic_projection(5.0, 5.0, 13.0, 0.1);
+    let b = Matrix4x4::inv_orthographic_projection(5.0, 5.0, 13.0, 0.1);
+    assert_eq!(a * b, cor)
 }

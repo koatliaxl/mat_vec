@@ -269,6 +269,25 @@ where
         mat
     }
 
+    // Inverse of the orthographic projection matrix
+    pub fn inv_orthographic_projection(
+        proj_plane_width: T,
+        proj_plane_height: T,
+        z_far: T,
+        z_near: T,
+    ) -> Matrix4x4<T> {
+        let one = T::one();
+        let two = one + one;
+        let (w, h) = (proj_plane_width, proj_plane_height);
+        let mut mat = Matrix4x4::zero_matrix();
+        mat.set(0, 0, w / two);
+        mat.set(1, 1, h / two);
+        mat.set(2, 2, -(z_far - z_near) / two);
+        mat.set(2, 3, -(z_far + z_near) / two);
+        mat.set(3, 3, one);
+        mat
+    }
+
     #[allow(non_snake_case)]
     pub fn new_LookAt_matrix(
         viewer_position: Vector3<T>,
@@ -296,7 +315,7 @@ where
         rotation * translation
     }
 
-    // Inverted look-at matrix
+    // Inverse of the look-at matrix
     #[allow(non_snake_case)]
     pub fn inv_LookAt_matrix(
         viewer_position: Vector3<T>,
