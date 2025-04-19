@@ -11,6 +11,7 @@ mod tests {
     mod conversions;
     mod mat4x4;
     mod vec3;
+    mod vec4;
 }
 
 mod test_support {
