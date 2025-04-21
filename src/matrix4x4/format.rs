@@ -44,6 +44,7 @@ where
             let mut row_buffers = Vec::new();
             for c in 0..4 {
                 let s = self[(r, c)].to_string();
+                //let s = format!("{:>7}", self[(r,c)]);
                 let current_len = s.chars().count();
                 if current_len > columns_max_lengths[c] {
                     columns_max_lengths[c] = current_len
@@ -70,6 +71,21 @@ where
         }
         result
     }
+
+    #[deprecated]
+    pub fn simple_format(&self) -> String {
+        let mut s = String::new();
+        for r in 0..4 {
+            writeln!(s,
+                "| {0:}, {1:}, {2:}, {3:} |",
+                self[(r, 0)],
+                self[(r, 1)],
+                self[(r, 2)],
+                self[(r, 3)]
+            ).unwrap();
+        }
+        s
+    }
 }
 
 pub trait FractionalFormat {
@@ -87,6 +103,14 @@ impl<T> Matrix4x4<T>
 where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display + FractionalFormat,
 {
+    pub fn fmt_align_mag(&self) -> String {
+        self.format_align_magnitudes()
+    }
+
+    pub fn fmt_with_prec(&self, precision: usize) -> String {
+        self.format_with_precision(precision)
+    }
+
     pub fn format_align_magnitudes(&self) -> String {
         self.format_fractional(None)
     }
@@ -113,10 +137,10 @@ where
                     }
                     if fraction_len > max_fraction_lengths[c] {
                         max_fraction_lengths[c] = fraction_len;
-                        if let Some(prec) = precision {
-                            if max_fraction_lengths[c] > prec + 1 {
+                        if let Some(prc) = precision {
+                            if max_fraction_lengths[c] > prc + 1 {
                                 // +1 because fraction part includes delimiter
-                                max_fraction_lengths[c] = prec + 1;
+                                max_fraction_lengths[c] = prc + 1;
                             }
                         }
                     }

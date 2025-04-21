@@ -360,8 +360,8 @@ where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        writeln!(f)?;
-        for r in 0..4 {
+        //writeln!(f)?;
+        /*for r in 0..4 {
             writeln!(
                 f,
                 "| {0:}, {1:}, {2:}, {3:} |",
@@ -370,7 +370,8 @@ where
                 self[(r, 2)],
                 self[(r, 3)]
             )?;
-        }
+        }*/
+        writeln!(f, "{}", self.format_align_rows())?;
         Ok(())
     }
 }
