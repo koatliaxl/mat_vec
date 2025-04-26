@@ -1,8 +1,7 @@
+mod conv;
 mod ops;
 
-//use crate::Vector3;
-use crate::Vector3;
-use num_traits::{Float, One, Zero};
+use num_traits::{One, Zero};
 use std::fmt::Debug;
 use std::ops::{Index, IndexMut};
 
@@ -97,7 +96,7 @@ where
 
 impl<T> Vector4<T>
 where
-    T: Copy + Float,
+    T: Copy + One,
 {
     // Vector which is translates by the translation matrix
     pub fn new_translatable(x: T, y: T, z: T) -> Vector4<T> {
@@ -152,30 +151,3 @@ where
         true
     }
 }
-
-// ! The Vector4 created this way is translatable! (4th, 'w' component have value of 1)
-impl<T, U> From<Vector3<T>> for Vector4<U>
-where
-    U: From<T> + Copy + One,
-    T: Copy,
-{
-    fn from(other: Vector3<T>) -> Self {
-        Vector4 {
-            raw_data: [
-                U::from(other.x()),
-                U::from(other.y()),
-                U::from(other.z()),
-                U::one(),
-            ],
-        }
-    }
-}
-
-/*impl<T> Into<Vector3<T>> for Vector4<T>
-where
-    T: Copy,
-{
-    fn into(self) -> Vector3<T> {
-        Vector3::new(self.x(), self.y(), self.z())
-    }
-}*/

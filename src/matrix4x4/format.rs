@@ -76,13 +76,15 @@ where
     pub fn simple_format(&self) -> String {
         let mut s = String::new();
         for r in 0..4 {
-            writeln!(s,
+            writeln!(
+                s,
                 "| {0:}, {1:}, {2:}, {3:} |",
                 self[(r, 0)],
                 self[(r, 1)],
                 self[(r, 2)],
                 self[(r, 3)]
-            ).unwrap();
+            )
+            .unwrap();
         }
         s
     }

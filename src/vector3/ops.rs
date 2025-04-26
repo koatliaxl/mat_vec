@@ -133,3 +133,5 @@ where
         self.dot_product(rhs)
     }
 }
+
+//todo division by scalar
