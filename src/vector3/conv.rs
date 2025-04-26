@@ -1,4 +1,5 @@
 use crate::{Vector3, Vector4};
+//use num_traits::AsPrimitive;
 
 macro_rules! impl_primitive_conv {
     ($from: ty, $to: ty) => {
@@ -47,14 +48,33 @@ impl<T, U> From<Vector3<T>> for Vector3<U> where U: From<T>, T: Copy {
     }
 }*/
 
-impl<T, U> From<Vector4<T>> for Vector3<U>
+// commented out because this is conflicting implementation to every impl. of 'From'
+impl<T, U> From<&Vector4<T>> for Vector3<U>
 where
     U: From<T> + Copy,
     T: Copy,
 {
-    fn from(other: Vector4<T>) -> Vector3<U> {
+    fn from(other: &Vector4<T>) -> Vector3<U> {
         Vector3 {
             raw_data: [U::from(other.x()), U::from(other.y()), U::from(other.z())],
         }
     }
 }
+
+macro_rules! impl_vec3_from_vec4 {
+    ($elem:ty) => {
+        impl<T> From<Vector4<T>> for Vector3<$elem>
+        where
+            T: Copy,
+            $elem: From<T>,
+        {
+            fn from(other: Vector4<T>) -> Vector3<$elem> {
+                Vector3 {
+                    raw_data: [other.x().into(), other.y().into(), other.z().into()],
+                }
+            }
+        }
+    };
+}
+impl_vec3_from_vec4!(f32);
+impl_vec3_from_vec4!(f64);

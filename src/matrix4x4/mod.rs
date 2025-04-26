@@ -1,4 +1,4 @@
-mod add;
+//mod add;
 mod format;
 mod mul;
 mod mul_vec4;
@@ -360,17 +360,7 @@ where
     T: Copy + Add<Output = T> + Mul<Output = T> + AddAssign + Default + Display,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        writeln!(f)?;
-        for r in 0..4 {
-            writeln!(
-                f,
-                "| {0:}, {1:}, {2:}, {3:} |",
-                self[(r, 0)],
-                self[(r, 1)],
-                self[(r, 2)],
-                self[(r, 3)]
-            )?;
-        }
+        writeln!(f, "{}", self.format_align_rows())?;
         Ok(())
     }
 }

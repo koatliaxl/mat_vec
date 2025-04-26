@@ -1,4 +1,4 @@
-use crate::Vector3;
+use crate::{Vector3, Vector4};
 
 #[test]
 fn test_vec3_conversions() {
@@ -19,4 +19,12 @@ fn test_vec3_conversions() {
     let b = Vector3::<i32>::from(a);
     let cor = Vector3::new(2, -1, 7);
     assert_eq!(b, cor);*/
+    let a = Vector4::new_translatable(2, -1, 7);
+    let b = Vector3::from(a);
+    let cor = Vector3::new(2.0, -1.0, 7.0);
+    assert_eq!(b, cor);
+    let a = Vector3::new(1.7, -3.05, 2.4);
+    let b = Vector4::<f64>::from(a);
+    let cor = Vector4::new(1.7, -3.05, 2.4, 1.0);
+    assert_eq!(b, cor);
 }

@@ -1,7 +1,7 @@
 use super::Matrix4x4;
 use std::ops::{Add, AddAssign, Mul, MulAssign};
 
-macro_rules! multiply {
+macro_rules! impl_multiply {
     ($L:ty, $R:ty) => {
         impl<T> Mul<$L> for $R
         where
@@ -23,17 +23,17 @@ macro_rules! multiply {
         }
     };
 }
-multiply!(Matrix4x4<T>, Matrix4x4<T>);
-multiply!(Matrix4x4<T>, &Matrix4x4<T>);
-multiply!(&Matrix4x4<T>, Matrix4x4<T>);
-multiply!(&Matrix4x4<T>, &Matrix4x4<T>);
-multiply!(Matrix4x4<T>, &mut Matrix4x4<T>);
-multiply!(&mut Matrix4x4<T>, Matrix4x4<T>);
-multiply!(&mut Matrix4x4<T>, &mut Matrix4x4<T>);
-multiply!(&mut Matrix4x4<T>, &Matrix4x4<T>);
-multiply!(&Matrix4x4<T>, &mut Matrix4x4<T>);
+impl_multiply!(Matrix4x4<T>, Matrix4x4<T>);
+impl_multiply!(Matrix4x4<T>, &Matrix4x4<T>);
+impl_multiply!(&Matrix4x4<T>, Matrix4x4<T>);
+impl_multiply!(&Matrix4x4<T>, &Matrix4x4<T>);
+impl_multiply!(Matrix4x4<T>, &mut Matrix4x4<T>);
+impl_multiply!(&mut Matrix4x4<T>, Matrix4x4<T>);
+impl_multiply!(&mut Matrix4x4<T>, &mut Matrix4x4<T>);
+impl_multiply!(&mut Matrix4x4<T>, &Matrix4x4<T>);
+impl_multiply!(&Matrix4x4<T>, &mut Matrix4x4<T>);
 
-macro_rules! mul_assign {
+macro_rules! impl_mul_assign {
     ($Rhs: ty) => {
         impl<T> MulAssign<$Rhs> for Matrix4x4<T>
         where
@@ -53,6 +53,6 @@ macro_rules! mul_assign {
         }
     };
 }
-mul_assign!(Matrix4x4<T>);
-mul_assign!(&Matrix4x4<T>);
-mul_assign!(&mut Matrix4x4<T>);
+impl_mul_assign!(Matrix4x4<T>);
+impl_mul_assign!(&Matrix4x4<T>);
+impl_mul_assign!(&mut Matrix4x4<T>);
