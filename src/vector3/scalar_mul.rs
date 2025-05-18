@@ -1,5 +1,5 @@
 use crate::Vector3;
-use std::ops::{Div, Mul, MulAssign};
+use std::ops::{Div, DivAssign, Mul, MulAssign};
 
 /// Scalar Multiplication
 ///
@@ -134,10 +134,6 @@ macro_rules! impl_scalar_div {
 
             fn div(self, rhs: $scalar) -> Self::Output {
                 self / rhs as $elem
-                /*let d = rhs as $elem;
-                Vector3 {
-                    raw_data: [self.x() / d, self.y() / d, self.z() / d],
-                }*/
             }
         }
     };
@@ -157,3 +153,37 @@ impl_scalar_div!(f64, i64);
 impl_scalar_div!(f64, u64);
 impl_scalar_div!(f64, isize);
 impl_scalar_div!(f64, usize);
+
+impl<T> DivAssign<T> for Vector3<T>
+where
+    T: Copy + Div<Output = T>,
+{
+    fn div_assign(&mut self, rhs: T) {
+        self.raw_data = [self.x() / rhs, self.y() / rhs, self.z() / rhs]
+    }
+}
+
+macro_rules! impl_div_assign {
+    ($elem: ty, $scalar: ty) => {
+        impl DivAssign<$scalar> for Vector3<$elem> {
+            fn div_assign(&mut self, rhs: $scalar) {
+                *self /= rhs as $elem
+            }
+        }
+    };
+}
+
+impl_div_assign!(f32, f64);
+impl_div_assign!(f32, i32);
+impl_div_assign!(f32, u32);
+impl_div_assign!(f32, i64);
+impl_div_assign!(f32, u64);
+impl_div_assign!(f32, isize);
+impl_div_assign!(f32, usize);
+impl_div_assign!(f64, f32);
+impl_div_assign!(f64, i32);
+impl_div_assign!(f64, u32);
+impl_div_assign!(f64, i64);
+impl_div_assign!(f64, u64);
+impl_div_assign!(f64, isize);
+impl_div_assign!(f64, usize);

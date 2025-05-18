@@ -1,6 +1,6 @@
 use crate::Vector3;
 use std::fmt::Debug;
-use std::ops::MulAssign;
+use std::ops::{DivAssign, MulAssign};
 
 // (test macro expansion)
 #[test]
@@ -71,6 +71,17 @@ fn test_scalar_div() {
     assert_eq!(vec / 2.0, Vector3::new(1.2, -1.5, 0.3));
     assert_eq!(vec / 2, Vector3::new(1.2, -1.5, 0.3));
     //assert_eq!(vec / 3, Vector3::new(0.8, -1.0, 0.2));
-    let vec = Vector3::new(2.5, 15.0, -0.5);
-    assert_eq!(vec / 5, Vector3::new(0.5, 3.0, -0.1));
+    let vec_2 = Vector3::new(2.5, 15.0, -0.5);
+    assert_eq!(vec_2 / 5, Vector3::new(0.5, 3.0, -0.1));
+
+    assert_div_assign(vec, 2.0, Vector3::new(1.2, -1.5, 0.3));
+    assert_div_assign(vec_2, -5, Vector3::new(-0.5, -3.0, 0.1));
+}
+
+fn assert_div_assign<V, S>(mut vec: V, scalar: S, correct: V)
+where
+    V: DivAssign<S> + PartialEq + Debug,
+{
+    vec /= scalar;
+    assert_eq!(vec, correct);
 }
