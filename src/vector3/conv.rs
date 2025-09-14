@@ -48,7 +48,6 @@ impl<T, U> From<Vector3<T>> for Vector3<U> where U: From<T>, T: Copy {
     }
 }*/
 
-// commented out because this is conflicting implementation to every impl. of 'From'
 impl<T, U> From<&Vector4<T>> for Vector3<U>
 where
     U: From<T> + Copy,

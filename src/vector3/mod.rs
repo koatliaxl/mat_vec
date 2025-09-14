@@ -11,7 +11,6 @@ pub struct Vector3<T>
 where
     T: Copy,
 {
-    // todo? change inner structure
     raw_data: [T; 3],
 }
 
@@ -19,19 +18,17 @@ impl<T> Vector3<T>
 where
     T: Copy,
 {
-    pub fn new(x: T, y: T, z: T) -> Vector3<T> {
+    pub const fn new(x: T, y: T, z: T) -> Vector3<T> {
         Vector3 {
             raw_data: [x, y, z],
         }
     }
 
-    //todo new_uniform()
-
-    pub fn from_array(arr: [T; 3]) -> Vector3<T> {
+    pub const fn from_array(arr: [T; 3]) -> Vector3<T> {
         Vector3 { raw_data: arr }
     }
 
-    pub fn from_tuple(tuple: (T, T, T)) -> Vector3<T> {
+    pub const fn from_tuple(tuple: (T, T, T)) -> Vector3<T> {
         Vector3 {
             raw_data: [tuple.0, tuple.1, tuple.2],
         }

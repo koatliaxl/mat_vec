@@ -1,6 +1,8 @@
 mod conv;
 mod ops;
 
+use crate::Vector3;
+use core::marker::Copy;
 use num_traits::{One, Zero};
 use std::fmt::Debug;
 use std::ops::{Index, IndexMut};
@@ -17,17 +19,17 @@ impl<T> Vector4<T>
 where
     T: Copy,
 {
-    pub fn new(x: T, y: T, z: T, w: T) -> Vector4<T> {
+    pub const fn new(x: T, y: T, z: T, w: T) -> Vector4<T> {
         Vector4 {
             raw_data: [x, y, z, w],
         }
     }
 
-    pub fn from_array(arr: [T; 4]) -> Vector4<T> {
+    pub const fn from_array(arr: [T; 4]) -> Vector4<T> {
         Vector4 { raw_data: arr }
     }
 
-    pub fn from_tuple(tuple: (T, T, T, T)) -> Vector4<T> {
+    pub const fn from_tuple(tuple: (T, T, T, T)) -> Vector4<T> {
         let (x, y, z, w) = tuple;
         Vector4 {
             raw_data: [x, y, z, w],
@@ -98,10 +100,29 @@ impl<T> Vector4<T>
 where
     T: Copy + One,
 {
+    // Translatable by the translation matrix
+    pub fn from_vec3(vec3: Vector3<T>) -> Vector4<T> {
+        Vector4 {
+            raw_data: [vec3.x(), vec3.y(), vec3.z(), T::one()],
+        }
+    }
+
     // Vector which is translates by the translation matrix
     pub fn new_translatable(x: T, y: T, z: T) -> Vector4<T> {
         Vector4 {
             raw_data: [x, y, z, T::one()],
+        }
+    }
+}
+
+impl<T> Vector4<T>
+where
+    T: Copy + Zero,
+{
+    // Vector which is not translates by translation matrix
+    pub fn from_vec3_non_translatable(vec3: Vector3<T>) -> Vector4<T> {
+        Vector4 {
+            raw_data: [vec3.x(), vec3.y(), vec3.z(), T::zero()],
         }
     }
 }
